@@ -1,0 +1,33 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ListenerProgress {
+  id         Int      @id @default(autoincrement())
+  listenerId String
+  topic      String
+  lastSeenId Int      @default(0)
+  updatedAt  DateTime @updatedAt
+
+  @@unique([listenerId, topic])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  topic     String
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  githubId  String   @unique
+  username  String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+}
