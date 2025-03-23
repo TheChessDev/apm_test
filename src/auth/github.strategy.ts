@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-github2';
+import { Profile, Strategy } from 'passport-github2';
 
 import { ConfigService } from '../config/config.service';
+import { UsersService } from '../users/users.service';
+import { GitHubProfileDto } from './dto/github-profile.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly userService: UsersService,
+    readonly configService: ConfigService,
+  ) {
     super({
       clientID: configService.get('GITHUB_CLIENT_ID'),
       clientSecret: configService.get('GITHUB_CLIENT_SECRET'),
@@ -15,8 +21,18 @@ export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any) {
-    // Optionally save user info to DB here
-    return profile;
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ): Promise<User> {
+    const username = profile.username ?? profile.displayName;
+    const githubProfile: GitHubProfileDto = {
+      id: profile.id,
+      username,
+      avatarUrl: profile.photos?.[0]?.value ?? null,
+    };
+
+    return this.userService.findOrCreate(githubProfile);
   }
 }
