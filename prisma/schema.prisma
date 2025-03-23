@@ -24,10 +24,20 @@ model Message {
   createdAt DateTime @default(now())
 }
 
-model User {
+model RefreshToken {
   id        Int      @id @default(autoincrement())
-  githubId  String   @unique
-  username  String
-  avatarUrl String?
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  githubId     String         @unique
+  username     String
+  avatarUrl    String?
+  createdAt    DateTime       @default(now())
+  RefreshToken RefreshToken[]
 }
