@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build
 
-npx prisma migrate deploy
+RUN npx prisma migrate deploy
 
 EXPOSE 3000
 
