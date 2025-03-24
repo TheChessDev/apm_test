@@ -30,7 +30,6 @@ export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
     const githubProfile: GitHubProfileDto = {
       id: profile.id,
       username,
-      avatarUrl: profile.photos?.[0]?.value ?? null,
     };
 
     return this.userService.findOrCreate(githubProfile);

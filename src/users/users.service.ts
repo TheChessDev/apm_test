@@ -19,7 +19,6 @@ export class UsersService {
         data: {
           githubId,
           username: profile.username,
-          avatarUrl: profile.avatarUrl,
         },
       });
     }
