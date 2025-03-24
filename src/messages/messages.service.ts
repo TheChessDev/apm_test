@@ -22,10 +22,6 @@ export class MessagesService {
     });
   }
 
-  /**
-   * returns the next message for the given listener if at least 60 seconds have passed
-   * since the last delivered message; otherwise, it returns null.
-   */
   async getNextMessage(
     topic: string,
     listenerId: string,
@@ -41,7 +37,10 @@ export class MessagesService {
     }
 
     const now = new Date();
-    if (now.getTime() - new Date(progress.updatedAt).getTime() < 60 * 1000) {
+    if (
+      progress.lastSeenId !== 0 &&
+      now.getTime() - new Date(progress.updatedAt).getTime() < 60 * 1000
+    ) {
       return null;
     }
 

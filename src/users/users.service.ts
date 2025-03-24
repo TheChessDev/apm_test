@@ -5,7 +5,7 @@ import { GitHubProfileDto } from '../auth/dto/github-profile.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findOrCreate(profile: GitHubProfileDto): Promise<User> {
     const githubId = profile.id.toString();

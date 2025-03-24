@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { TopicsService } from './topics.service';
-import { AuthGuard } from '@nestjs/passport';
+import { AppAuthGuard } from '../auth/auth.guard';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AppAuthGuard)
 @Controller('topics')
 export class TopicsController {
   constructor(private readonly topicsService: TopicsService) {}

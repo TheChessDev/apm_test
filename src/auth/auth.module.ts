@@ -8,6 +8,10 @@ import { GitHubStrategy } from './github.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { HttpModule } from '@nestjs/axios';
+import { PermanentTokenAuthGuard } from './permanent-token.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { AppAuthGuard } from './auth.guard';
+import { TokensModule } from 'src/tokens/tokens.module';
 
 export const AccessJwtProvider = {
   provide: 'ACCESS_JWT',
@@ -30,13 +34,23 @@ export const RefreshJwtProvider = {
 };
 
 @Module({
-  imports: [AppConfigModule, HttpModule, PrismaModule, UsersModule],
+  imports: [
+    AppConfigModule,
+    HttpModule,
+    PrismaModule,
+    UsersModule,
+    TokensModule,
+  ],
   controllers: [AuthController],
   providers: [
     AccessJwtProvider,
+    PermanentTokenAuthGuard,
+    AppAuthGuard,
     GitHubStrategy,
+    JwtAuthGuard,
     JwtStrategy,
     RefreshJwtProvider,
   ],
+  exports: [JwtAuthGuard, AppAuthGuard, PermanentTokenAuthGuard],
 })
 export class AuthModule {}

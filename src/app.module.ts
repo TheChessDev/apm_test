@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
 import { UsersModule } from './users/users.module';
 import { TopicsModule } from './topics/topics.module';
+import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TopicsModule } from './topics/topics.module';
     PrismaModule,
     UsersModule,
     TopicsModule,
+    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
