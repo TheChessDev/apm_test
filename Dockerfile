@@ -10,6 +10,8 @@ COPY . .
 
 RUN npm run build
 
+npx prisma migrate deploy
+
 EXPOSE 3000
 
 CMD ["node", "dist/main"]
