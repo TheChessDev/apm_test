@@ -17,6 +17,7 @@ export const envSchema = z.object({
     message: INVALID_SECRET_MESSAGE,
   }),
   JWT_REFRESH_EXPIRATION_MS: z.coerce.number().default(604800000), // 7 days
+  GITHUB_CALLBACK_URL: z.string().url(),
 });
 
 export type EnvVars = z.infer<typeof envSchema>;
