@@ -18,7 +18,7 @@ export class UsersService {
       user = await this.prisma.user.create({
         data: {
           githubId,
-          username: profile.username,
+          username: profile.username ?? profile.displayName ?? '',
         },
       });
     }
